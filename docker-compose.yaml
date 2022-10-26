@@ -1,0 +1,37 @@
+version: '3'
+volumes:
+  mariadb:
+
+
+networks:
+  produto_net:
+    driver: bridge
+
+services:
+    phpmyadmin:
+        image: phpmyadmin:5.2.0
+        ports:
+        - 8080:80
+        depends_on:
+            - mariadb
+        networks:
+            - produto_net
+        environment:
+            - PMA_HOST=mariadb
+            - PMA_PORT=3306
+            - PMA_USER=root
+            - PMA_PASSWORD=mariadbpwd
+    mariadb:
+        image: mariadb:10.3
+        ports:
+        - 3306:3306
+        networks:
+            - produto_net
+        volumes:
+          - mariadb:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: mariadbpwd
+            MYSQL_USER:  root
+            
+        
+            
